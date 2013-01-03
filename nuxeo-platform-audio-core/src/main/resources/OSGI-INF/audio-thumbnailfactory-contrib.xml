@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<component name="org.nuxeo.ecm.platform.audio.service.thumbnailfactory">
+
+  <extension target="org.nuxeo.ecm.platform.picture.thumbnail.ThumbnailService"
+    point="thumbnailFactory">
+    <thumbnailFactory name="thumbnailPictureFactory"
+      docType="Audio"
+      factoryClass="org.nuxeo.ecm.platform.audio.extension.ThumbnailAudioFactory" />
+  </extension>
+
+</component>
