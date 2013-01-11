@@ -32,8 +32,10 @@ import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.blobholder.BlobHolder;
 import org.nuxeo.ecm.core.api.impl.blob.FileBlob;
-import org.nuxeo.ecm.platform.picture.api.thumbnail.ThumbnailFactory;
+import org.nuxeo.ecm.core.api.thumbnail.ThumbnailFactory;
+import org.nuxeo.ecm.core.convert.api.ConversionService;
 import org.nuxeo.ecm.platform.types.adapter.TypeInfo;
+import org.nuxeo.runtime.api.Framework;
 
 /**
  * Audio thumbnail factory
@@ -74,7 +76,14 @@ public class ThumbnailAudioFactory implements ThumbnailFactory {
         } catch (ReadOnlyFileException e) {
             log.debug("Unable to get the audio file cover art", e);
         }
-        if (thumbnailBlob == null) {
+        if (thumbnailBlob != null) {
+            // We have to convert / if no convert or no cover -> fallback on
+            // bigIcon
+            ConversionService conversionService = Framework.getLocalService(ConversionService.class);
+            bh = conversionService.convert("thumbnailDocumentConverter",
+                    (BlobHolder) doc.getAdapter(BlobHolder.class), null);
+        }
+        if (bh == null || thumbnailBlob == null) {
             TypeInfo docType = doc.getAdapter(TypeInfo.class);
             return new FileBlob(
                     FileUtils.getResourceFileFromContext("nuxeo.war"
