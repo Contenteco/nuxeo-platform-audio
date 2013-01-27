@@ -78,13 +78,13 @@ public class ThumbnailAudioFactory implements ThumbnailFactory {
                 }
             }
         } catch (IOException e) {
-            log.debug("Unable to get the audio file cover art", e);
+            log.warn("Unable to get the audio file cover art", e);
         } catch (TagException e) {
-            log.debug("Unable to get the audio file cover art", e);
+            log.warn("Unable to get the audio file cover art", e);
         } catch (InvalidAudioFrameException e) {
-            log.debug("Unable to get the audio file cover art", e);
+            log.warn("Unable to get the audio file cover art", e);
         } catch (ReadOnlyFileException e) {
-            log.debug("Unable to get the audio file cover art", e);
+            log.warn("Unable to get the audio file cover art", e);
         } finally {
             if (thumbnailBlob == null) {
                 TypeInfo docType = doc.getAdapter(TypeInfo.class);
@@ -94,5 +94,10 @@ public class ThumbnailAudioFactory implements ThumbnailFactory {
             }
         }
         return thumbnailBlob;
+    }
+
+    @Override
+    public Blob computeThumbnail(DocumentModel doc, CoreSession session) {
+        return null;
     }
 }
